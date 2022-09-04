@@ -1,0 +1,27 @@
+﻿@using nodetest.Models
+@using nodetest.Utils
+@using nodetest.ViewModels
+
+<div @ref="_wrapper" class="output ms-auto text-sm-end">
+    @OutputsTemplate(Model)
+</div>
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment<IConnection> OutputsTemplate { get; set; }
+    
+    [CascadingParameter(Name = nameof(ConnectionsStorage))]
+    public ConnectionsStorage ConnectionsStorage { get; set; }
+    
+    [Parameter]
+    public IConnection Model { get; set; }
+
+    private ElementReference _wrapper;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var rect = await _wrapper.GetBoundingClientRect();
+        ConnectionsStorage.AddFrom(Model, rect);
+    }
+
+}
+

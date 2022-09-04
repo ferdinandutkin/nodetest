@@ -1,0 +1,19 @@
+﻿@using nodetest.ViewModels
+
+
+<line stroke="red" stroke-width="2" x1="@X1" y1="@Y1" x2="@X2" y2="@Y2"></line> 
+
+@code {
+    
+    
+    [EditorRequired, Parameter]
+    public ConnectionViewModel Model { get; set; }
+
+    private int X1 => Model.FromRect.Center.X;
+    private int Y1 => Model.FromRect.Center.Y;
+
+    private int X2 => Model.ToRect.Center.X;
+    private int Y2 => Model.ToRect.Center.Y;
+}
+
+

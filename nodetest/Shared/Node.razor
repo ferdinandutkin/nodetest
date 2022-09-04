@@ -1,0 +1,60 @@
+﻿@using nodetest.Models
+@using nodetest.Utils
+@using nodetest.ViewModels
+
+
+<div class="node"
+     style="transform: @CssTransform; width: @Width; height: @Height;"
+     data-toggle="tooltip" data-placement="top" title="@Model.Id">
+    <div class="row">
+        <div class="col">
+            @Model.ToString()
+        </div>
+    </div>
+    <div class="row" @ref="_div">
+        <div class="col">
+            @foreach (var node in Model.Inputs)
+            {
+                <InputWrapper Model="node" InputsTemplate="InputsTemplate"/>
+                
+            }
+        </div>
+        <div class="col">
+            @foreach (var node in Model.Outputs)
+            {
+                <OutputWrapper Model="node" OutputsTemplate="OutputsTemplate"/>
+            }
+        </div>
+    </div>
+
+
+</div>
+
+@code {
+
+    [EditorRequired, Parameter]
+    public NodeViewModel Model { get; set; }
+
+    string CssTransform => FormattableString.Invariant($"translate({Model.Position.X}px, {Model.Position.Y}px)");
+
+    string Width => FormattableString.Invariant($"{Model.Width}px");
+
+    string Height => FormattableString.Invariant($"{Model.Height}px");
+
+    [Parameter]
+    public RenderFragment<IConnection> InputsTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment<IConnection> OutputsTemplate { get; set; }
+
+    private ElementReference _div;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var name = await _div.GetNameAsync();
+        }
+    }
+
+}

@@ -1,0 +1,24 @@
+﻿@using nodetest.ViewModels
+
+
+<div style="z-index: 999">
+ <svg class="overflow-visible">
+   @foreach (var connection in ConnectionsStorage.Connections)
+   {
+       <Connector Model="connection"></Connector> 
+   }
+ </svg>   
+</div>
+
+
+
+@code
+{
+    [CascadingParameter(Name = nameof(ConnectionsStorage))]
+    public ConnectionsStorage ConnectionsStorage { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        ConnectionsStorage.OnConnectionCompleted += _ => StateHasChanged();
+    }
+}

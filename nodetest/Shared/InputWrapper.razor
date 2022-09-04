@@ -1,0 +1,27 @@
+﻿@using nodetest.Models
+@using nodetest.Utils
+@using nodetest.ViewModels
+
+
+<div @ref="_wrapper" class="input me-auto text-sm-start">
+    @InputsTemplate(Model)
+</div>
+@code {
+    [Parameter]
+    public RenderFragment<IConnection> InputsTemplate { get; set; }
+
+    [CascadingParameter(Name = nameof(ConnectionsStorage))]
+    public ConnectionsStorage ConnectionsStorage { get; set; }
+
+    [Parameter]
+    public IConnection Model { get; set; }
+    
+    private ElementReference _wrapper;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var rect = await _wrapper.GetBoundingClientRect();
+        ConnectionsStorage.AddTo(Model, rect);
+    }
+
+}

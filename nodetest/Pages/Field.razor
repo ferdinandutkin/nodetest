@@ -1,0 +1,69 @@
+﻿@page "/field"
+@using nodetest.Models
+@using nodetest.Models.Nodes
+@using nodetest.ViewModels
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+
+<p role="status">Current count: @currentCount</p>
+
+
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<CascadingValue Value="ConnectionsStorage" Name="@nameof(ConnectionsStorage)">
+    @foreach (var node in NodeCollectionViewModel.KnownNodes)
+    {
+        <Node Model="node" >
+            <InputsTemplate>
+                <span style="color:black;">I</span>
+            </InputsTemplate>
+            <OutputsTemplate>
+                <span style="color:red">O</span>
+            </OutputsTemplate>
+        </Node>
+    }
+    
+    <Connectors/>
+
+</CascadingValue>
+
+@code {
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    NodeCollectionViewModel NodeCollectionViewModel;
+
+    public ConnectionsStorage ConnectionsStorage = new();
+
+    protected override void OnInitialized()
+    {
+
+
+
+        var startNode = new NodeViewModel(new StartNode(), "1") { Height = 200, Width = 200 };
+
+        var defnote2 = new NodeViewModel(new DefaultNode(), "2.1") { Height = 200, Width = 200 };
+        var defnote = new NodeViewModel(new DefaultNode(), "2.2") { Height = 200, Width = 200 };
+        var endNode = new NodeViewModel(new EndNode(), "3") { Height = 250, Width = 250 };
+
+        startNode.Connect(defnote);
+        startNode.Connect(defnote2);
+        defnote.Connect(endNode);
+
+        NodeCollectionViewModel = new NodeCollectionViewModel(startNode);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var ts = ConnectionsStorage;
+    }
+
+}
