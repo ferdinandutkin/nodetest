@@ -12,6 +12,9 @@
 
     [CascadingParameter(Name = nameof(ConnectionsStorage))]
     public ConnectionsStorage ConnectionsStorage { get; set; }
+    
+    [CascadingParameter(Name = nameof(ParentOffsetStorage))]
+    public ParentOffsetStorage ParentOffsetStorage { get; set; }
 
     [Parameter]
     public IConnection Model { get; set; }
@@ -20,8 +23,11 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var rect = await _wrapper.GetBoundingClientRect();
-        ConnectionsStorage.AddTo(Model, rect);
+        var offset = await _wrapper.GetOffsetAsync();
+        var parentOffset = ParentOffsetStorage.ParentOffset;
+        var height = await _wrapper.GetHeightAsync();
+        var toStore = offset - parentOffset + new Vector2() {X = 0, Y = height / 2};
+        ConnectionsStorage.AddTo(Model, toStore);
     }
 
 }

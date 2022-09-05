@@ -7,17 +7,17 @@ public class ConnectionViewModel : IConnection
 {
     private readonly IConnection _connection;
     
-    public ElementUtils.BoundingClientRect FromRect { get; }
+    public Vector2 FromVector { get; }
     
-    public ElementUtils.BoundingClientRect ToRect { get; }
+    public Vector2 ToVector { get; }
 
     public ConnectionViewModel(IConnection connection,
-        ElementUtils.BoundingClientRect fromRect, 
-        ElementUtils.BoundingClientRect toRect)
+        Vector2 fromVector, 
+        Vector2 toVector)
     {
         _connection = connection;
-        FromRect = fromRect;
-        ToRect = toRect;
+        FromVector = fromVector;
+        ToVector = toVector;
     }
 
     public bool Equals(IConnection? other)

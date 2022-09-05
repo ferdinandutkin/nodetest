@@ -8,14 +8,21 @@ public struct BoundingClientRectPair
     public ElementUtils.BoundingClientRect From { get; set; }
     public ElementUtils.BoundingClientRect To { get; set; }
 }
+
+public struct VectorPair
+{
+    public Vector2 From { get; set; }
+    public Vector2 To { get; set; }
+}
+
 public class ConnectionsStorage
 {
-    private Dictionary<IConnection, BoundingClientRectPair> _connectionsData = new ();
-
+    private Dictionary<IConnection, VectorPair> _connectionsData = new ();
+   
     public IReadOnlyCollection<ConnectionViewModel> Connections => _connections;
 
     private List<ConnectionViewModel> _connections = new();
-    public void AddFrom(IConnection connection, ElementUtils.BoundingClientRect from)
+    public void AddFrom(IConnection connection, Vector2 from)
     {
         if (_connectionsData.TryGetValue(connection, out var pair))
         {
@@ -24,11 +31,11 @@ public class ConnectionsStorage
             return;
         }
 
-        _connectionsData[connection] = new BoundingClientRectPair() { From = from };
+        _connectionsData[connection] = new VectorPair() { From = from };
     }
     
     
-    public void AddTo(IConnection connection, ElementUtils.BoundingClientRect to)
+    public void AddTo(IConnection connection, Vector2 to)
     {
         if (_connectionsData.TryGetValue(connection, out var pair))
         {
@@ -36,13 +43,13 @@ public class ConnectionsStorage
             ConnectionCompleted(connection, pair);
             return;
         }
-        _connectionsData[connection] = new BoundingClientRectPair() { To = to };
+        _connectionsData[connection] = new VectorPair() { To = to };
        
     }
 
-    private void ConnectionCompleted(IConnection connection, BoundingClientRectPair rectPair)
+    private void ConnectionCompleted(IConnection connection, VectorPair vectorPair)
     {
-        var connectionViewModel = new ConnectionViewModel(connection, rectPair.From, rectPair.To);
+        var connectionViewModel = new ConnectionViewModel(connection, vectorPair.From, vectorPair.To);
         _connections.Add(connectionViewModel);
         OnConnectionCompleted?.Invoke(connectionViewModel);
     }

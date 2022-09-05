@@ -47,4 +47,27 @@ public static class ElementUtils
         
         return await runtime.InvokeAsync<BoundingClientRect>("ElementUtils.getBoundingClientRect", reference);
     }
+    
+    public static async Task<Vector2> GetOffsetAsync(this ElementReference reference)
+    {
+        var runtime = _getJsRuntime(reference);
+        
+        return await runtime.InvokeAsync<Vector2>("ElementUtils.getOffset", reference);
+    }
+    
+    public static async Task<int> GetWidthAsync(this ElementReference reference)
+    {
+        var runtime = _getJsRuntime(reference);
+        
+        return await runtime.InvokeAsync<int>("ElementUtils.getWidth", reference);
+    }
+    
+    public static async Task<int> GetHeightAsync(this ElementReference reference)
+    {
+        var runtime = _getJsRuntime(reference);
+        
+        return await runtime.InvokeAsync<int>("ElementUtils.getHeight", reference);
+    }
+
+
 }

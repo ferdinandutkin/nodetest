@@ -9,11 +9,11 @@
     [EditorRequired, Parameter]
     public ConnectionViewModel Model { get; set; }
 
-    private int X1 => Model.FromRect.Center.X;
-    private int Y1 => Model.FromRect.Center.Y;
+    private int X1 => Model.FromVector.X;
+    private int Y1 => Model.FromVector.Y;
 
-    private int X2 => Model.ToRect.Center.X;
-    private int Y2 => Model.ToRect.Center.Y;
+    private int X2 => Model.ToVector.X;
+    private int Y2 => Model.ToVector.Y;
 }
 
 
